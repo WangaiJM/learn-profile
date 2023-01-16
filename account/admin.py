@@ -34,7 +34,9 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField(help_text= ("Raw passwords are not stored, so there is no way to see "
+                  "this user's password, but you can change the password "
+                  "using <a href=\"../password/\">this form</a>."))
 
     class Meta:
         model = User
@@ -50,6 +52,7 @@ class UserAdmin(ClinicUserAdmin):
     add_form = UserCreationForm
 
     fieldsets = (
+        (None, {'fields': ('password',)}),
         ('Personal Info', {'fields': ('email', )}),
         ('Permissions', {'fields': ('is_staff', 'is_superuser','is_active','user_permissions' ,'groups')}),
         ('Roles', {'fields': ('is_doctor', 'is_labtech', 'is_reception')}),
